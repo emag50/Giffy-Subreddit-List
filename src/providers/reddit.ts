@@ -29,23 +29,29 @@ export class Reddit {
     if (this.after) {
       url += '&after=' + this.after;
     }
+
     this.loading = true;
     this.http.get(url).map(res => res.json()).subscribe(data => {
       let stopIndex = this.posts.length;
       this.posts = this.posts.concat(data.data.children);
-      for (let i = this.posts.length - 1; i >= stopIndex; i--) {
 
+      for (let i = this.posts.length - 1; i >= stopIndex; i--) {
         let post = this.posts[i];
         post.showLoader = false;
         post.alreadyLoaded = false;
+
         if (post.data.thumbnail == 'nsfw') {
           this.posts[i].data.thumbnail = 'images/nsfw.png';
         }
+
         if (post.data.url.indexOf('.gifv') > -1 || post.data.url.indexOf('.webm') > -1) {
           this.posts[i].data.url = post.data.url.replace('.gifv', '.mp4');
+
           this.posts[i].data.url = post.data.url.replace('.webm', '.mp4');
+
           if (typeof (post.data.preview) != "undefined") {
             this.posts[i].data.snapshot = post.data.preview.images[0].source.url.replace(/&amp;/g, '&');
+
             if (this.posts[i].data.snapshot == "undefined") {
               this.posts[i].data.snapshot = "";
             }
@@ -54,6 +60,7 @@ export class Reddit {
             this.posts[i].data.snapshot = "";
           }
         }
+
         else {
           this.posts.splice(i, 1);
         }
@@ -82,4 +89,16 @@ export class Reddit {
       console.log("subreddit doesn't exist!");
     });
   }
+
+  nextPage() {
+    this.page++;
+    this.fetchData();
+  }
+      resetPosts(){
+    this.page = 1;
+    this.posts = [];
+    this.after = null;
+    this.fetchData();
+  }
+
 }
