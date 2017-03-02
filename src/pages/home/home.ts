@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { InAppBrowser } from 'ionic-native';
+
 import { ModalController, Platform } from 'ionic-angular';
 import { Keyboard } from 'ionic-native';
 import { SettingsPage } from '../settings/settings';
 import { Data } from '../../providers/data';
 import { Reddit } from '../../providers/reddit';
 import { FormControl } from '@angular/forms';
-
+import { InAppBrowser } from 'ionic-native';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
@@ -51,7 +51,7 @@ export class HomePage {
 
 
  loadSettings(): void {
-   
+
  this.dataService.getData().then((settings) => {
  
 
@@ -74,7 +74,7 @@ export class HomePage {
 
   }
 
-  showComments(post): void {
+   showComments(post): void {
     let browser = new InAppBrowser('http://reddit.com' + post.data.permalink, '_system');
   }
 
